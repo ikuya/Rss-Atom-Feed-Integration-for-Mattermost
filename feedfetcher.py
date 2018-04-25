@@ -14,6 +14,7 @@ import threading
 import urlparse
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from rssfeed import RssFeed
+import urllib2
 
 try:
     import feedparser
@@ -129,6 +130,12 @@ class RSSManagementRequestHandler(BaseHTTPRequestHandler):
 def fetching_feed(feed):
     try:
         d = feedparser.parse(feed.Url)
+        if not settings.http_proxy or not settings.https_proxy:
+            proxy = urllib2.ProxyHandler({
+                "http": settings.http_proxy,
+                "https": settings.https_proxy
+            })
+            d = feedparser.parse(feed.Url, handlers = [proxy])
         if d['entries']:
             feed.NewTitle = d['entries'][0]['title']
             feed.ArticleUrl = d['entries'][0]['link']

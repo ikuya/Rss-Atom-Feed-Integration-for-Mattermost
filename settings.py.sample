@@ -12,6 +12,10 @@ mattermost_webhook_url = 'https://<your-mattermost-webhook-URL>'
 # See also: https://docs.mattermost.com/developer/slash-commands.html
 mattermost_integration_token = '<your-slash-command-token>'
 
+# Proxy
+http_proxy = ''
+https_proxy = ''
+
 # Set the delay between feed pulls to your needs. 5 minutes should be okay.
 delay_between_pulls = 60 * 5
 
