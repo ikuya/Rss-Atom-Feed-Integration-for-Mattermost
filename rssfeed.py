@@ -36,7 +36,7 @@ class RssFeed:
         if self.ShowName == True:
             text += "_" + self.Name + '_\n'
         if self.ShowTitle == True:
-            text += '### [' + self.NewTitle + '](' + urllib.quote(self.ArticleUrl, safe=';/?:@&=+$,') + ')\n'
+            text += '### [' + self.NewTitle + '](' + urllib.quote(self.ArticleUrl, safe=';/?:@&=+$,#') + ')\n'
         if self.ShowDescription == True:
             text += self.Description + '\n'
         if self.ShowUrl == True:
