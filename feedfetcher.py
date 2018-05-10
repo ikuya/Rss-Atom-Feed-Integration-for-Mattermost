@@ -15,6 +15,7 @@ import urlparse
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from rssfeed import RssFeed
 import urllib2
+import timeout_decorator
 
 try:
     import feedparser
@@ -127,6 +128,7 @@ class RSSManagementRequestHandler(BaseHTTPRequestHandler):
                 self.data['text'] = 'Sorry, I don\'t understand your command: `' + params.get('text', '')[0] + '`'
             self.wfile.write(json.dumps(self.data))
 
+@timeout_decorator.timeout(60, timeout_exception=StopIteration)
 def fetching_feed(feed):
     try:
         d = feedparser.parse(feed.Url)
@@ -182,6 +184,9 @@ if __name__ == "__main__":
 
     while 1:
         for feed in feeds:
-            fetching_feed(feed)
+            try:
+                fetching_feed(feed)
+            except StopIteration:
+                logging.debug('[' + feed.Name + '] ' + 'Timed out.')
 
         time.sleep(delay_between_pulls)
